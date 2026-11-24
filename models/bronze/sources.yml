@@ -1,4 +1,3 @@
-
 version: 2
 
 sources:
@@ -8,24 +7,25 @@ sources:
     tables:
       - name: customers
         description: "Informations sur les clients"
-
       - name: dates
         description: "Référentiel des dates"
-
       - name: employees
         description: "Informations sur les employés"
-
       - name: orderitems
         description: "Détail des lignes de commande"
-
       - name: orders
         description: "Commandes"
-
       - name: products
         description: "Produits"
-
       - name: stores
         description: "Magasins"
-
       - name: suppliers
         description: "Fournisseurs"
+
+  - name: training
+    schema: training
+    description: "Données de ventes par pays (training.sql)"
+    tables:
+      - name: sales_india
+      - name: sales_uk
+      - name: sales_us
