@@ -7,14 +7,43 @@ sources:
     tables:
       - name: customers
         description: "Informations sur les clients"
+        columns:
+          - name: customerid
+            tests:
+              - unique
+              - not_null
+
+      - name: orders
+        description: "Commandes"
+        columns:
+          - name: orderid
+            tests:
+              - unique
+              - not_null
+          - name: status
+            tests:
+              - accepted_values:
+                  values: ['01', '02', '03']
+          - name: customerid
+            tests:
+              - relationships:
+                  to: source('bronze', 'customers')
+                  field: customerid
+
+      - name: orderitems
+        description: "Détail des lignes de commande"
+        columns:
+          - name: orderid
+            tests:
+              - not_null
+              - relationships:
+                  to: source('bronze', 'orders')
+                  field: orderid
+
       - name: dates
         description: "Référentiel des dates"
       - name: employees
         description: "Informations sur les employés"
-      - name: orderitems
-        description: "Détail des lignes de commande"
-      - name: orders
-        description: "Commandes"
       - name: products
         description: "Produits"
       - name: stores
