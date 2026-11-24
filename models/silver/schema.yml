@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Clients nettoyés : prénom en majuscules et nom complet."
+    columns:
+      - name: customerid
+        description: "Identifiant unique du client."
+      - name: firstname
+        description: "Prénom du client, en majuscules."
+      - name: fullname
+        description: "Prénom et nom concaténés."
+
+  - name: orders
+    description: "Commandes avec le libellé du statut."
+    columns:
+      - name: orderid
+        description: "Identifiant unique de la commande."
+      - name: StatusDescription
+        description: "Libellé du statut : En cours, Terminée ou Annulée."
+
+  - name: orders_items
+    description: "Lignes de commande avec le prix total de chaque ligne."
+    columns:
+      - name: TotalPrice
+        description: "Prix total de la ligne (quantity × unitprice)."

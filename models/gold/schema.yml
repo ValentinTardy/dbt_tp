@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: fact_orders
+    description: "Table de faits : nombre de commandes et chiffre d'affaires par client, employé, magasin et statut."
+    columns:
+      - name: number_of_orders
+        description: "Nombre de commandes distinctes."
+      - name: total_revenue
+        description: "Chiffre d'affaires (somme de quantity × unitprice)."
+
+  - name: customer_revenu
+    description: "Chiffre d'affaires total et nombre de commandes par client."
+
+  - name: store_performance
+    description: "Performance par magasin : commandes, CA réel et objectif de vente (seed salestarget)."
+
+  - name: orderitems_unique
+    description: "Lignes de commande sans doublon (orderid, productid), via dbt_utils.deduplicate."
+
+  - name: profit_us
+    description: "Profit journalier aux États-Unis, converti en euros (macro generate_profit_model)."
+  - name: profit_uk
+    description: "Profit journalier au Royaume-Uni, converti en euros (macro generate_profit_model)."
+  - name: profit_india
+    description: "Profit journalier en Inde, converti en euros (macro generate_profit_model)."

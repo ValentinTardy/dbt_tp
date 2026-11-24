@@ -3,58 +3,90 @@ version: 2
 sources:
   - name: bronze
     schema: bronze
-    description: "Tables sources de la couche Bronze"
+    description: "Données brutes chargées par Init_bronze.sql, sans transformation."
     tables:
       - name: customers
-        description: "Informations sur les clients"
+        description: "Clients de l'enseigne (1 ligne par client)."
         columns:
           - name: customerid
+            description: "Identifiant unique du client (clé primaire)."
             tests:
               - unique
               - not_null
+          - name: firstname
+            description: "Prénom du client."
+          - name: lastname
+            description: "Nom de famille du client."
+          - name: email
+            description: "Adresse e-mail du client."
+          - name: city
+            description: "Ville du client."
+          - name: updated_at
+            description: "Date de dernière mise à jour de la ligne (utilisée par le snapshot)."
 
       - name: orders
-        description: "Commandes"
+        description: "Commandes passées en magasin (1 ligne par commande)."
         columns:
           - name: orderid
+            description: "Identifiant unique de la commande (clé primaire)."
             tests:
               - unique
               - not_null
-          - name: status
-            tests:
-              - accepted_values:
-                  values: ['01', '02', '03']
+          - name: orderdate
+            description: "Date de la commande."
           - name: customerid
+            description: "Client ayant passé la commande (clé étrangère vers customers)."
             tests:
               - relationships:
                   to: source('bronze', 'customers')
                   field: customerid
+          - name: employeeid
+            description: "Employé ayant enregistré la commande."
+          - name: storeid
+            description: "Magasin où la commande a été passée."
+          - name: status
+            description: "Statut de la commande : 01 = En cours, 02 = Terminée, 03 = Annulée."
+            tests:
+              - accepted_values:
+                  values: ['01', '02', '03']
 
       - name: orderitems
-        description: "Détail des lignes de commande"
+        description: "Lignes de commande (1 ligne par produit d'une commande)."
         columns:
           - name: orderid
+            description: "Commande à laquelle appartient la ligne (clé étrangère vers orders)."
             tests:
               - not_null
               - relationships:
                   to: source('bronze', 'orders')
                   field: orderid
+          - name: orderitemid
+            description: "Numéro de la ligne dans la commande."
+          - name: productid
+            description: "Produit commandé."
+          - name: quantity
+            description: "Quantité commandée."
+          - name: unitprice
+            description: "Prix unitaire de vente."
 
       - name: dates
-        description: "Référentiel des dates"
+        description: "Référentiel calendaire (1 ligne par jour)."
       - name: employees
-        description: "Informations sur les employés"
+        description: "Employés de l'enseigne."
       - name: products
-        description: "Produits"
+        description: "Catalogue des produits."
       - name: stores
-        description: "Magasins"
+        description: "Magasins de l'enseigne."
       - name: suppliers
-        description: "Fournisseurs"
+        description: "Fournisseurs des produits."
 
   - name: training
     schema: training
-    description: "Données de ventes par pays (training.sql)"
+    description: "Ventes journalières par pays, chargées par training.sql (module 7)."
     tables:
       - name: sales_india
+        description: "Ventes en Inde, montants en roupies."
       - name: sales_uk
+        description: "Ventes au Royaume-Uni, montants en livres sterling."
       - name: sales_us
+        description: "Ventes aux États-Unis, montants en dollars."
